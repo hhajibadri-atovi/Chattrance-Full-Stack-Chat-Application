@@ -83,7 +83,7 @@ function Chat() {
       <NavBar />
 
       {/* Lists all chat rooms you are active in */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-auto">
         <aside className="hidden md:flex md:w-64 flex-col border-r border-white/10">
           <div className="flex flex-col gap-2 px-4 py-3 border-b border-white/10">
             <h2 className="text-center text-lg font-semibold">Chat Rooms</h2>
