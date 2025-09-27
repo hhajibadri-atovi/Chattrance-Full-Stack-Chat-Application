@@ -4,7 +4,7 @@ import { API_ROUTES } from "chattrance-shared";
 
 import "./LeaveRoom.css";
 
-const LeaveRoomPopUp = ({ onClose, roomId }) => {
+const LeaveRoomPopUp = ({ onClose, roomId, leaveRoom }) => {
 
   const [message, setMessage] = useState("");
 
@@ -17,6 +17,7 @@ const LeaveRoomPopUp = ({ onClose, roomId }) => {
     console.log(serverData);
     if (serverData.ok) {
       onClose();
+      leaveRoom(roomId);
     } else {
       setMessage(serverData.error);
     }

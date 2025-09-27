@@ -18,8 +18,6 @@ export function setupSocket(server: http.Server, sessionMiddleware: RequestHandl
 
   io.on('connection', (socket) => {
 
-    console.log(`User connected: ${socket.id}`);
-
     const req = socket.request as Request;
 
     if (!req.session.user) {
@@ -53,9 +51,6 @@ export function setupSocket(server: http.Server, sessionMiddleware: RequestHandl
       }
 
     });
-
-    socket.on('disconnect', () => console.log(`User disconnected: ${user.id}`));
-
   });
 
 }

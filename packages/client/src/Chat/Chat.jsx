@@ -20,9 +20,11 @@ function Chat() {
 
   const [createButton, setCreateButton] = useState(false);
 
-  const [currentRoomIndex, setCurrentRoomId] = useState(null);
+  const [currentRoomId, setCurrentRoomId] = useState(null);
 
   const [joinButton, setJoinButton] = useState(false);
+
+  const currentRoom = chatRooms.find(room => room.id === currentRoomId);
 
   useEffect(() => {
 
@@ -34,7 +36,19 @@ function Chat() {
 
   }, []);
 
-  const messageBoxes = chatRooms.map(room => { return <ChatRoom key={room.id} roomId={room.id} /> });
+  const addRoom = (room) => {
+    setChatRooms(prev => [...prev, room]);
+  };
+
+  const leaveRoom = (roomId) => {
+    setChatRooms(prev => prev.filter(r => r.id !== roomId));
+    setCurrentRoomId(null);
+  }
+
+  const deleteRoom = (roomId) => {
+    setChatRooms(prev => prev.filter(r => r.id !== roomId));
+    setCurrentRoomId(null);
+  }
 
   async function getRooms() {
     try {
@@ -54,9 +68,9 @@ function Chat() {
     }
   }
 
-  const handleRoomClick = (index) => {
-    if (index !== currentRoomIndex) {
-      setCurrentRoomId(index);
+  const handleRoomClick = (roomId) => {
+    if (roomId !== currentRoomId) {
+      setCurrentRoomId(roomId);
     }
   };
 
@@ -93,7 +107,7 @@ function Chat() {
               <button onClick={openCreatePopUp}>
                 <CiCirclePlus size={30} color="skyblue" />
               </button>
-              {createButton && <CreateRoomPopUp onClose={closeCreatePopUp} />}
+              {createButton && <CreateRoomPopUp onClose={closeCreatePopUp} addRoom={addRoom} />}
             </div>
 
             <div className="flex justify-center items-center">
@@ -109,12 +123,12 @@ function Chat() {
             {chatRooms.length === 0 ? (
               <li className="text-center px-4 py-3 text-white/60">No chat rooms yet</li>
             ) : (
-              chatRooms.map((room, index) => (
+              chatRooms.map(room => (
                 <div
                   key={room.id}
                   className="flex flex-col items-center justify-center px-4 py-3 hover:bg-gray-500 focus:bg-gray-800 w-full focus:outline-none focus:border-2 focus:border-blue-500 gap-3">
                   <button
-                    onClick={() => { handleRoomClick(index) }}
+                    onClick={() => { handleRoomClick(room.id) }}
                     className="flex flex-col items-center justify-center gap-3">
                     {room.name ? (
                       <span className="p-1 border-2">{room.name}</span>
@@ -135,14 +149,16 @@ function Chat() {
         </aside>
 
         <section className="w-full flex flex-col">
-          {currentRoomIndex !== null ? (
+          {currentRoomId !== null ? (
             <>
               <ChatHeader
-                roomName={chatRooms[currentRoomIndex].name}
-                roomId={chatRooms[currentRoomIndex].id}
-                roomOwner={chatRooms[currentRoomIndex].owner}
+                roomName={currentRoom.name}
+                roomId={currentRoom.id}
+                roomOwner={currentRoom.owner}
+                leaveRoom={leaveRoom}
+                deleteRoom={deleteRoom}
               />
-              {messageBoxes[currentRoomIndex]}
+              <ChatRoom roomId={currentRoomId} />
             </>
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center text-white/60">

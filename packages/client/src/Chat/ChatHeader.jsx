@@ -8,7 +8,7 @@ import { useAuth } from "../Authentication/AuthProvider";
 import DeleteRoomPopUp from "../Components/PopUps/DeleteRoom";
 import LeaveRoomPopUp from "../Components/PopUps/LeaveRoom";
 
-function ChatHeader({ roomName, roomId, roomOwner }) {
+function ChatHeader({ roomName, roomId, roomOwner, leaveRoom, deleteRoom }) {
 
   const { authUser } = useAuth();
 
@@ -76,7 +76,7 @@ function ChatHeader({ roomName, roomId, roomOwner }) {
             onClick={openDeletePopUp}>
             <IoTrashBinOutline size={30} color="red" />
           </button>
-          {deleteButton && <DeleteRoomPopUp onClose={closeDeletePopUp} roomId={roomId} />}
+          {deleteButton && <DeleteRoomPopUp onClose={closeDeletePopUp} roomId={roomId} deleteRoom={deleteRoom} />}
         </div>
       ) : (
         <div className="w-full flex items-center justify-center gap-1">
@@ -85,7 +85,7 @@ function ChatHeader({ roomName, roomId, roomOwner }) {
             onClick={openLeavePopUp}>
             <IoMdExit size={30} color="red" />
           </button>
-          {leaveButton && <LeaveRoomPopUp onClose={closeLeavePopUp} roomId={roomId} />}
+          {leaveButton && <LeaveRoomPopUp onClose={closeLeavePopUp} roomId={roomId} leaveRoom={leaveRoom} />}
         </div>
       )}
     </div>

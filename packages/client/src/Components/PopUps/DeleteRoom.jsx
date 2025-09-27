@@ -4,7 +4,7 @@ import { API_ROUTES } from "chattrance-shared";
 
 import "./DeleteRoom.css";
 
-const DeleteRoomPopUp = ({ onClose, roomId }) => {
+const DeleteRoomPopUp = ({ onClose, roomId, deleteRoom }) => {
 
   const [message, setMessage] = useState("");
 
@@ -17,6 +17,7 @@ const DeleteRoomPopUp = ({ onClose, roomId }) => {
     console.log(serverData);
     if (serverData.ok) {
       onClose();
+      deleteRoom(roomId);
     } else {
       setMessage(serverData.error);
     }

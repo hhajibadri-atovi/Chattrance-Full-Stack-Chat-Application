@@ -47,20 +47,28 @@ export async function getRooms(userId: string): Promise<ServiceResponse<{ roomsD
 
 }
 
-export async function createRoom(name: string, password: string, owner: string): Promise<ServiceResponse<void>> {
+export async function createRoom(name: string, password: string, owner: string): Promise<ServiceResponse<{ roomData: RoomData }>> {
 
   const passwordHash = password ? await bcrypt.hash(password, SALT_ROUNDS) : null;
 
   const members: mongoose.Schema.Types.ObjectId[] = [];
 
-  await Room.create({
+  const room = await Room.create({
     name,
     password: passwordHash,
     owner,
     members,
   });
 
-  return createServiceResponse(true);
+  const roomData: RoomData = {
+    id: room._id.toString(),
+    name: room.name,
+    owner: room.owner.toString(),
+    created: room.created,
+    members: room.members.map(member => member.toString())
+  }
+
+  return createServiceResponse(true, null, { roomData });
 }
 
 export async function deleteRoom(roomId: string, userId: string): Promise<ServiceResponse<void>> {

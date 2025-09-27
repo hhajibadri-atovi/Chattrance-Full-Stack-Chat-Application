@@ -7,7 +7,7 @@ import { API_ROUTES } from "chattrance-shared";
 
 import "./CreateRoom.css";
 
-const CreateRoomPopUp = ({ onClose }) => {
+const CreateRoomPopUp = ({ onClose, addRoom }) => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
@@ -35,6 +35,8 @@ const CreateRoomPopUp = ({ onClose }) => {
     const serverData = await res.json();
     if (serverData.ok) {
       setMessage("Room created successfully");
+      console.log(serverData);
+      addRoom(serverData.data.roomData);
     } else {
       setMessage(serverData.error);
     }

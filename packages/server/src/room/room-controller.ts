@@ -79,7 +79,7 @@ export async function createRoom(req: Request, res: Response) {
 
     return res
       .status(StatusCodes.OK)
-      .json(createApiResponse(true));
+      .json(createApiResponse(true, null, result.data));
 
   } catch (err) {
 
